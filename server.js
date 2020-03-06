@@ -38,9 +38,22 @@ app.get("/api/notes", (req, res) => {
     });
 });
 
-app.delete("/api/notes:id", (req, res) => {
-    console.log(id);
-    res.send("Got a DELETE request");
+app.delete("/api/notes/:id", (req, res) => {
+    let id = req.params.id;
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            throw err;
+        }
+        let savedNotes = JSON.parse(data);
+        for (note in savedNotes) {
+            if (savedNotes[note].id === id) {
+                savedNotes.splice(note, 1);
+                updateDb(JSON.stringify(savedNotes));
+                return;
+            }
+        }
+    });
+    res.end();
 });
 
 app.post("/api/notes", (req, res) => {
