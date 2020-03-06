@@ -29,12 +29,18 @@ app.get("/notes", (req, res) =>{
 });
 
 app.get("/api/notes", (req, res) => {
+    console.log("API GET Notes")
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
         if (err) {
             throw err;
         }
         res.json( JSON.parse(data) );
     });
+});
+
+app.delete("/api/notes:id", (req, res) => {
+    console.log(id);
+    res.send("Got a DELETE request");
 });
 
 app.post("/api/notes", (req, res) => {
@@ -48,11 +54,10 @@ app.post("/api/notes", (req, res) => {
         savedNotes.push(newNote);
         updateDb(JSON.stringify(savedNotes));
     });
+    res.send("Saved");
 });
 
-app.delete("/api/notes:id", (req, res) => {
-    console.log(req.body);
-});
+
 
 app.get("*", (req, res) => {
     console.log("GET *");
