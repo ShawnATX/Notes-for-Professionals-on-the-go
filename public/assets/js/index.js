@@ -38,12 +38,15 @@ var renderActiveNote = function() {
 
   if (activeNote.id) {
     $noteTitle.attr("readonly", true);
+    $noteTitle.attr("data-id", activeNote.id);
     $noteText.attr("readonly", true);
     $noteTitle.val(activeNote.title);
     $noteText.val(activeNote.text);
   } else {
     $noteTitle.attr("readonly", false);
     $noteText.attr("readonly", false);
+    $noteTitle.attr("data-id", "");
+
     $noteTitle.val("");
     $noteText.val("");
   }
@@ -53,7 +56,8 @@ var renderActiveNote = function() {
 var handleNoteSave = function() {
   var newNote = {
     title: $noteTitle.val(),
-    text: $noteText.val()
+    text: $noteText.val(),
+    id: $noteTitle.attr("data-id")
   };
 
   saveNote(newNote).then(function(data) {
